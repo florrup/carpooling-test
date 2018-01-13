@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Login and register buttons and text edits -->
+    <style name="myButtonStyle">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="loginButtonStyle" parent="myButtonStyle">
+        <item name="android:background">@drawable/rounded_button_primary</item>
+    </style>
+
+    <style name="registerButtonStyle" parent="myButtonStyle">
+        <item name="android:background">@drawable/rounded_button_accent</item>
+    </style>
+
+    <style name="myTextEditStyle">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColorHint">@color/textEditBorder</item>
+        <item name="android:background">@drawable/rounded_textedit</item>
+    </style>
+
+</resources>

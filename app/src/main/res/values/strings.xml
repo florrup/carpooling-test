@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Carpooling</string>
+
+    <!-- Strings related to login and register -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="prompt_confirm_password">Confirmar contraseña</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_up">Registrarse</string>
+</resources>
