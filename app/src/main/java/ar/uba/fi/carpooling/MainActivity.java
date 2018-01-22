@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ar.uba.fi.carpooling.util.Consts;
+import ar.uba.fi.carpooling.util.InputInformationValidator;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button loginBtn;
@@ -46,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean validateCredentials() {
         String email = emailLoginText.getText().toString();
         String password = passwordLoginText.getText().toString();
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailLoginText.setError("Email inválido");
+        if (!InputInformationValidator.getValidator().isEmailValid(email)) {
+            emailLoginText.setError(Consts.INVALID_EMAIL);
             return false;
         }
 
-        if (password.length() < 8) {
-            passwordLoginText.setError("Contraseña inválida");
+        if (!InputInformationValidator.getValidator().isPasswordValid(password)) {
+            passwordLoginText.setError(Consts.INVALID_PASSWORD);
             return false;
         }
         return true;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setEnabled(false); // so that the user won't click the button again
 
         if (!validateCredentials()) {
-            Toast.makeText(MainActivity.this, "Credenciales inválidas", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, Consts.INVALID_INPUT_TEXT, Toast.LENGTH_SHORT).show();
             loginBtn.setEnabled(true);
             return;
         }
