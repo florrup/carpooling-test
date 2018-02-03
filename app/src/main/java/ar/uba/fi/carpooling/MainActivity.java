@@ -11,8 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import ar.uba.fi.carpooling.data.RetrofitInstance;
+import ar.uba.fi.carpooling.data.ServiceGenerator;
+import ar.uba.fi.carpooling.data.UserEntity;
+import ar.uba.fi.carpooling.data.UserResponse;
+import ar.uba.fi.carpooling.data.UserService;
 import ar.uba.fi.carpooling.util.Consts;
 import ar.uba.fi.carpooling.util.InputInformationValidator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText emailLoginText;
     private EditText passwordLoginText;
 
+    private static final String TAG = "USERDEX";
+    private Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         loginBtn = (Button) findViewById(R.id.loginBtn);
         registerBtn = (Button) findViewById(R.id.registerBtn);
+
+        retrofit = RetrofitInstance.getRetrofit();
+        obtainUsers();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +59,34 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent registerIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(registerIntent);
+            }
+        });
+    }
+
+    private void obtainUsers() {
+        UserService service = ServiceGenerator.getUserService();
+        Call<UserResponse> userResponseCall = service.getUsers();
+
+        userResponseCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    UserResponse userResponse = response.body();
+                    ArrayList<UserEntity> listaUsers = userResponse.getResults();
+
+                    for (int i = 0; i < listaUsers.size(); i++) {
+                        UserEntity u = listaUsers.get(i);
+                        Log.i(TAG, " Pokemon: " + u.getName());
+                    }
+
+                } else {
+                    Log.e(TAG, " onResponse: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Log.e(TAG, " onFailure: " + t.getMessage());
             }
         });
     }

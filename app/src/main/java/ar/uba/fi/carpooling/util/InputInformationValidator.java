@@ -11,7 +11,7 @@ public class InputInformationValidator {
         if (validator == null) {
             validator = new InputInformationValidator();
         }
-        return(validator);
+        return validator;
     }
 
     public boolean isEmailValid(String email) {
