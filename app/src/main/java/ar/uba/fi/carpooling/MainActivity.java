@@ -2,14 +2,19 @@ package ar.uba.fi.carpooling;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -36,14 +41,23 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "USERDEX";
     private Retrofit retrofit;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            Log.i("Logeado", "Ya estaba logeado");
+            // TODO start map activity
+        }
+
         loginBtn = (Button) findViewById(R.id.loginBtn);
         registerBtn = (Button) findViewById(R.id.registerBtn);
 
+        /* Testing API with Retrofit */
         retrofit = RetrofitInstance.getRetrofit();
         obtainUsers();
 
@@ -76,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int i = 0; i < listaUsers.size(); i++) {
                         UserEntity u = listaUsers.get(i);
-                        Log.i(TAG, " Pokemon: " + u.getName());
+                        //Log.i(TAG, " Pokemon: " + u.getName());
                     }
 
                 } else {
@@ -127,30 +141,18 @@ public class MainActivity extends AppCompatActivity {
         String email = emailLoginText.getText().toString();
         String password = passwordLoginText.getText().toString();
 
-        // New Thread that will be in charge of the login
-        new LoginTaskThread().execute("Parámetros que necesite el LoginTaskThread");
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Log in error", Toast.LENGTH_SHORT).show();
+                }
+                // TODO start map activity
+                Log.i("Logeado", "Ha sido logeado");
+            }
+        });
+
     }
 
-    public void displayResult(String textoAMostrar){
-        emailLoginText.setText(textoAMostrar);
-    }
-
-    private class LoginTaskThread extends AsyncTask {
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            // Pretend to fetch credentials
-            for (int i=1;i<40000; i++) {
-                Log.i("Login", "Probando");
-            }
-            return "Resultado";
-        }
-        @Override
-        protected void onPostExecute(Object result) {
-            displayResult((String)result);
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
-        }
-    }
 }
 
