@@ -147,8 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Log in error", Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
+
                 // TODO start map activity
                 Log.i("Logeado", "Ha sido logeado");
+                Intent registerIntent = new Intent(MainActivity.this, DriverMapActivity.class);
+                startActivity(registerIntent);
             }
         });
 
