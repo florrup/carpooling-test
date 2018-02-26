@@ -7,4 +7,5 @@
     <string name="prompt_confirm_password">Confirmar contraseña</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_up">Registrarse</string>
+    <string name="title_activity_driver_map">Map</string>
 </resources>
